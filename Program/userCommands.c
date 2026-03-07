@@ -8,6 +8,17 @@
 #include <sys/stat.h>
 
 #include "dirCopy.h"
+#include "userCommands.h"
+
+i8 setRepository(char* path) {
+    char fullPath[SIZE];
+
+    sprintf(fullPath, "%s\\%s", path, REP_NAME);
+
+    FILE* pConfig;
+
+    DIR* pRepository = opendir(fullPath);
+}
 
 i8 addToReject(char* name) {
     if (name == NULL) return -1;

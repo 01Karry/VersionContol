@@ -95,9 +95,18 @@ void copyFile(char* source, char* dest) {
 void copyDir(char* source, char* destPath) {
     printf("Source : %s\n", source);
     DIR* pSource = opendir(source);
+    if (pSource == NULL) {
+        printf("Can't open source directory!\n");
+        exit(-1);
+    }
 
     mkdir(destPath);
     DIR* pCopy = opendir(destPath);
+    if (pSource == NULL) {
+        printf("Can't open destination directory!\n");
+        exit(-1);
+    }
+
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
         if (!isReject(entry->d_name)) {

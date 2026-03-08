@@ -12,7 +12,7 @@
 #define SIZE 1024
 #define BUFF_SIZE 512
 
-#define REJECT_FILE_NAME "VSreject.txt"
+#define REJECT_FILE_NAME "VCreject.txt"
 
 typedef int8_t i8;
 typedef uint32_t u32;

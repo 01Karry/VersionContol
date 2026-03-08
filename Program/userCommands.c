@@ -6,18 +6,38 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #include "dirCopy.h"
 #include "userCommands.h"
 
+i8 getRepPath(char* buff) {
+    FILE* pConfig = fopen(CONFIG_FILE_NAME, "r");
+    if (pConfig == NULL) return -1;
+
+    fread(buff, SIZE, 1, pConfig);
+
+    fclose(pConfig);
+
+    return 0;
+}
+
 i8 setRepository(char* path) {
-    char fullPath[SIZE];
+    Config cfg = { { 0 }, 0 };
 
-    sprintf(fullPath, "%s\\%s", path, REP_NAME);
+    sprintf(cfg.path, "%s\\%s", path, REP_NAME);
 
-    FILE* pConfig;
+    FILE* pConfig = fopen(CONFIG_FILE_NAME, "wb");
+    if (pConfig == NULL) return 1;
 
-    DIR* pRepository = opendir(fullPath);
+    fwrite(cfg.path, SIZE, 1, pConfig);
+    fwrite(&cfg.versionCount, sizeof(cfg.versionCount), 1, pConfig);
+
+    fclose(pConfig);
+
+    mkdir(cfg.path);
+
+    return 0;
 }
 
 i8 addToReject(char* name) {

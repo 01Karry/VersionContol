@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "dirCopy.h"
 
 #define REP_NAME "VCrepository"

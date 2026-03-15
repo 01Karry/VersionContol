@@ -8,11 +8,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (strcmp(argv[1], SET) == 0 && argc == 3) {
-        handleSetRep(argv[2]);
-    }
-
-    if (strcmp(argv[1], COMMIT) == 0) {
+    if (strcmp(argv[1], SET) == 0 && argc == 2) {
+        handleInit();
     }
     
     return 0;

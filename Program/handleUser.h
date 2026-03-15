@@ -13,4 +13,4 @@
 #include "dirCopy.h"
 #include "userCommands.h"
 
-void handleSetRep(char* path);
+void handleInit();

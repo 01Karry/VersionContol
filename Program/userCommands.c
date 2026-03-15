@@ -11,6 +11,19 @@
 #include "dirCopy.h"
 #include "userCommands.h"
 
+i8 createRep() {
+    mkdir(REP_NAME);
+
+    FILE* pCfg = fopen(CONFIG_FILE_NAME, "wb");
+    if (pCfg == NULL) return 1;
+
+    fclose(pCfg);
+
+    mkdir(VERSIONS_FILE);
+    
+    return 0;
+}
+
 i8 getRepPath(char* buff) {
     FILE* pConfig = fopen(CONFIG_FILE_NAME, "r");
     if (pConfig == NULL) return -1;

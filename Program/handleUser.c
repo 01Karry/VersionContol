@@ -13,5 +13,5 @@
 
 void handleInit() {
     if (createRep() == 0) printf("RepCreated\n");
-    else printf("Can't create Reposytory");
+    else printf("Can't create Repository");
 }

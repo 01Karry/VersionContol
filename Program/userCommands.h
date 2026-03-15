@@ -3,8 +3,8 @@
 #include "dirCopy.h"
 
 #define REP_NAME "MyVCS_Rep"
-#define CONFIG_FILE_NAME "MyVSC\\config.dat"
-#define VERSIONS_FILE "MyVCS\\Versions"
+#define CONFIG_FILE_NAME REP_NAME"\\config.dat"
+#define VERSIONS_FILE REP_NAME"\\Versions"
 
 #define SET "set"
 #define COMMIT "commit"
@@ -15,6 +15,3 @@ typedef struct Config {
 } Config;
 
 i8 createRep();
-i8 getRepPath(char* buff);
-i8 addToReject(char* name);
-i8 setRepository(char* path);

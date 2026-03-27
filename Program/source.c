@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (strcmp(argv[1], SET) == 0 && argc == 2) {
+    if (strcmp(argv[1], INIT) == 0 && argc == 2) {
         handleInit();
     }
     

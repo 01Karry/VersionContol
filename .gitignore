@@ -54,3 +54,5 @@ dkms.conf
 VCreject.txt
 nestedDirTest
 VCconfig.bin
+
+test.c

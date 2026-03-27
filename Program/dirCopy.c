@@ -8,8 +8,9 @@
 #include <sys/stat.h>
 
 #include "dirCopy.h"
+#include "userCommands.h"
 
-u8 checkExtReject(char* name, char* ext) {
+u8 checkExtIgnore(char* name, char* ext) {
     size_t extLen = strlen(ext);
     size_t nameLen = strlen(name);
 
@@ -18,35 +19,35 @@ u8 checkExtReject(char* name, char* ext) {
     return 0;
 }
 
-u8 checkBaseReject(char* name) {
+u8 checkBaseIgnore(char* name) {
     if (name == NULL) return -1;
 
-    char baseReject[][SIZE] = { ".", ".." };
+    char baseReject[][PATH_SIZE] = { ".", "..", REP_NAME };
 
     for (int i = 0; i < sizeof(baseReject) / sizeof(baseReject[0]); i++) {
-        if (strncmp(name, baseReject[i], SIZE) == 0) return 1;
+        if (strncmp(name, baseReject[i], PATH_SIZE) == 0) return 1;
     }
 
     return 0;
 }
 
-i8 checkInRejFile(char* name) {
-    FILE* pReject = fopen(REJECT_FILE_NAME, "r");
+i8 checkInMcpIgnore(char* name) {
+    FILE* pReject = fopen(IGNORE_FILE_NAME, "r");
     if (pReject == NULL) return -1;
 
-    char nameRej[SIZE];
+    char nameRej[PATH_SIZE];
 
-    while (fgets(nameRej, SIZE, pReject) != NULL) {
+    while (fgets(nameRej, PATH_SIZE, pReject) != NULL) {
         size_t len = strlen(nameRej);
 
         if (nameRej[len - 1] == '\n') nameRej[len - 1] = '\0';
 
         printf("R : %s\n", nameRej);
-        if (nameRej[0] == '.' && checkExtReject(name, nameRej)) {
+        if (nameRej[0] == '.' && checkExtIgnore(name, nameRej)) {
             fclose(pReject);
             return 1;
         }
-        if (strncmp(name, nameRej, SIZE) == 0) {
+        if (strncmp(name, nameRej, PATH_SIZE) == 0) {
             fclose(pReject);
             return 1;
         }
@@ -56,12 +57,12 @@ i8 checkInRejFile(char* name) {
     return 0;
 }
 
-i8 isReject(char* name) {
+i8 isIgnore(char* name) {
     if (name == NULL) return -1;
 
-    if (checkBaseReject(name)) return 1;
+    if (checkBaseIgnore(name)) return 1;
 
-    i8 isInFile = checkInRejFile(name);
+    i8 isInFile = checkInMcpIgnore(name);
 
     if (isInFile) return isInFile;
 
@@ -93,7 +94,6 @@ void copyFile(char* source, char* dest) {
 }
 
 void copyDir(char* source, char* destPath) {
-    printf("Source : %s\n", source);
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
         printf("Can't open source directory!\n");
@@ -101,24 +101,23 @@ void copyDir(char* source, char* destPath) {
     }
 
     mkdir(destPath);
+
     DIR* pCopy = opendir(destPath);
     if (pSource == NULL) {
         printf("Can't open destination directory!\n");
         exit(-1);
     }
 
-
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
-        if (!isReject(entry->d_name)) {
-            char pathToSourceFile[SIZE];
+        if (!isIgnore(entry->d_name)) {
+            char pathToSourceFile[PATH_SIZE];
             sprintf(pathToSourceFile, "%s\\%s", source, entry->d_name);
 
-            char pathToDestFile[SIZE];
+            char pathToDestFile[PATH_SIZE];
             sprintf(pathToDestFile, "%s\\%s", destPath, entry->d_name);
             
             i8 type = getType(pathToSourceFile);
             
-            printf("Type : %d\n", type);
             switch (type) {
             case 0:
                 copyFile(pathToSourceFile, pathToDestFile);

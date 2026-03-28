@@ -57,5 +57,5 @@ i8 setUserName() {
 }
 
 i8 addToStage(char* fileName) {
-	return copy(fileName, STAGE_FILE_NAME);
+	return copyAny(fileName, STAGE_FILE_NAME);
 }

@@ -44,16 +44,16 @@ i8 checkInMcpIgnore(char* name) {
 
         if (nameFromFile[0] == '.' && checkExtIgnore(name, nameFromFile)) {
             fclose(pReject);
-            break;
+            return 2;
         }
         if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
             fclose(pReject);
-            break;
+            return 2;
         }
     }
 
     fclose(pReject);
-    return 2;
+    return 0;
 }
 
 i8 isIgnore(char* name) {
@@ -81,6 +81,9 @@ void copyFile(char* source, char* dest) {
     FILE* pSource = fopen(source, "rb");
     FILE* pDest = fopen(dest, "wb");
 
+    if (pSource) printf("a");
+    if (pDest) printf("b");
+
     int size;
     char buff[BUFF_SIZE];
 
@@ -92,11 +95,11 @@ void copyFile(char* source, char* dest) {
     fclose(pDest);
 }
 
-i8 copy(char* source, char* destPath) {
+void copyDir(char* source, char* destPath) {
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
         printf("Can't add %s\n", source);
-        return 1;
+        return;
     }
 
     mkdir(destPath);
@@ -104,36 +107,44 @@ i8 copy(char* source, char* destPath) {
     DIR* pCopy = opendir(destPath);
     if (pSource == NULL) {
         printf("Can't open destination directory!\n");
-        return 1;
+        return;
     }
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
-        i8 ignoreCode = isIgnore(entry->d_name);
+        char pathToSource[PATH_SIZE];
+        sprintf(pathToSource, "%s\\%s", source, entry->d_name);
 
-        ignoreOutput(entry->d_name, ignoreCode);
-
-        if (ignoreCode == 0) {
-            char pathToSourceFile[PATH_SIZE];
-            sprintf(pathToSourceFile, "%s\\%s", source, entry->d_name);
-
-            char pathToDestFile[PATH_SIZE];
-            sprintf(pathToDestFile, "%s\\%s", destPath, entry->d_name);
-            
-            i8 type = getType(pathToSourceFile);
-            
-            switch (type) {
-            case 0:
-                copyFile(pathToSourceFile, pathToDestFile);
-                break;
-            case 1:
-                return copy(pathToSourceFile, pathToDestFile);
-                break;
-            }
-        }
+        char pathToDest[PATH_SIZE];
+        sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);
+        
+        copyAny(pathToSource, pathToDest);
     }
-    
+
     closedir(pCopy);
     closedir(pSource);
+}
+
+i8 copyAny(char* source, char* destPath) {
+    printf("Source: %s\n", source);
+    i8 ignoreCode = isIgnore(source);
+
+    ignoreOutput(source, ignoreCode);
+
+    if (ignoreCode) return ignoreCode;
+
+    i8 type = getType(source);
+
+    switch (type) {
+    case 0:
+        char pathToDest[PATH_SIZE];
+        sprintf(pathToDest, "%s\\%s", destPath, source);
+
+        copyFile(source, pathToDest);
+        break;
+    case 1:
+        copyDir(source, destPath);
+        break;
+    }
 
     return 0;
 }

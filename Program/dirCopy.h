@@ -22,5 +22,5 @@ i8 isIgnore(char* name);
 i8 getType(char* path);
 void copyFile(char* source, char* dest);
 void dirCopy(char* source, char* dest);
-i8 copy(char* source, char* destPath);
+i8 copyAny(char* source, char* destPath);
 void ignoreOutput(char* name, i8 flag);

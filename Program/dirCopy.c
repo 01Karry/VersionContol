@@ -35,26 +35,25 @@ i8 checkInMcpIgnore(char* name) {
     FILE* pReject = fopen(IGNORE_FILE_NAME, "r");
     if (pReject == NULL) return -1;
 
-    char nameRej[PATH_SIZE];
+    char nameFromFile[PATH_SIZE];
 
-    while (fgets(nameRej, PATH_SIZE, pReject) != NULL) {
-        size_t len = strlen(nameRej);
+    while (fgets(nameFromFile, PATH_SIZE, pReject) != NULL) {
+        size_t len = strlen(nameFromFile);
 
-        if (nameRej[len - 1] == '\n') nameRej[len - 1] = '\0';
+        if (nameFromFile[len - 1] == '\n') nameFromFile[len - 1] = '\0';
 
-        printf("R : %s\n", nameRej);
-        if (nameRej[0] == '.' && checkExtIgnore(name, nameRej)) {
+        if (nameFromFile[0] == '.' && checkExtIgnore(name, nameFromFile)) {
             fclose(pReject);
-            return 1;
+            break;
         }
-        if (strncmp(name, nameRej, PATH_SIZE) == 0) {
+        if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
             fclose(pReject);
-            return 1;
+            break;
         }
     }
 
     fclose(pReject);
-    return 0;
+    return 2;
 }
 
 i8 isIgnore(char* name) {
@@ -93,11 +92,11 @@ void copyFile(char* source, char* dest) {
     fclose(pDest);
 }
 
-void copyDir(char* source, char* destPath) {
+i8 copy(char* source, char* destPath) {
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
-        printf("Can't open source directory!\n");
-        exit(-1);
+        printf("Can't add %s\n", source);
+        return 1;
     }
 
     mkdir(destPath);
@@ -105,11 +104,15 @@ void copyDir(char* source, char* destPath) {
     DIR* pCopy = opendir(destPath);
     if (pSource == NULL) {
         printf("Can't open destination directory!\n");
-        exit(-1);
+        return 1;
     }
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
-        if (!isIgnore(entry->d_name)) {
+        i8 ignoreCode = isIgnore(entry->d_name);
+
+        ignoreOutput(entry->d_name, ignoreCode);
+
+        if (ignoreCode == 0) {
             char pathToSourceFile[PATH_SIZE];
             sprintf(pathToSourceFile, "%s\\%s", source, entry->d_name);
 
@@ -123,7 +126,7 @@ void copyDir(char* source, char* destPath) {
                 copyFile(pathToSourceFile, pathToDestFile);
                 break;
             case 1:
-                copyDir(pathToSourceFile, pathToDestFile);
+                return copy(pathToSourceFile, pathToDestFile);
                 break;
             }
         }
@@ -131,4 +134,10 @@ void copyDir(char* source, char* destPath) {
     
     closedir(pCopy);
     closedir(pSource);
+
+    return 0;
+}
+
+void ignoreOutput(char* name, i8 flag) {
+    if (flag == 2) printf("%s is ignored\n", name); 
 }

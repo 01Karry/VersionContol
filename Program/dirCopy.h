@@ -21,4 +21,6 @@ typedef uint8_t u8;
 i8 isIgnore(char* name);
 i8 getType(char* path);
 void copyFile(char* source, char* dest);
-void copyDir(char* source, char* destPath);
+void dirCopy(char* source, char* dest);
+i8 copy(char* source, char* destPath);
+void ignoreOutput(char* name, i8 flag);

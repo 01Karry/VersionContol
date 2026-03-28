@@ -11,10 +11,6 @@
 #include "dirCopy.h"
 #include "userCommands.h"
 
-void getName(char* name) {
-    
-}
-
 void handleInit() {
     if (createRep() == 1) {
         printf("Can't create Repository\n");
@@ -35,5 +31,11 @@ void handleInit() {
     if (setUserName() == 1) {
         printf("Can't set user name\n");
         return;
+    }
+}
+
+void handleAdd(int argc, char** argv) {
+    for (int i = 2; i < argc; i++) {
+        addToStage(argv[i]);
     }
 }

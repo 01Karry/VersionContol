@@ -55,3 +55,7 @@ i8 setUserName() {
 
     return writeNameToCFG(buff);
 }
+
+i8 addToStage(char* fileName) {
+	return copy(fileName, STAGE_FILE_NAME);
+}

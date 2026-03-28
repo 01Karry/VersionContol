@@ -14,3 +14,4 @@
 #include "userCommands.h"
 
 void handleInit();
+void handleAdd(int argc, char** argv);

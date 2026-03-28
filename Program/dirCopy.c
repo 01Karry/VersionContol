@@ -81,9 +81,6 @@ void copyFile(char* source, char* dest) {
     FILE* pSource = fopen(source, "rb");
     FILE* pDest = fopen(dest, "wb");
 
-    if (pSource) printf("a");
-    if (pDest) printf("b");
-
     int size;
     char buff[BUFF_SIZE];
 
@@ -105,12 +102,19 @@ void copyDir(char* source, char* destPath) {
     mkdir(destPath);
 
     DIR* pCopy = opendir(destPath);
-    if (pSource == NULL) {
+    if (pCopy == NULL) {
         printf("Can't open destination directory!\n");
         return;
     }
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
+        i8 ignoreCode = isIgnore(entry->d_name);
+        
+        if (ignoreCode != 0) {
+            ignoreOutput(entry->d_name, ignoreCode);
+            continue;
+        }
+
         char pathToSource[PATH_SIZE];
         sprintf(pathToSource, "%s\\%s", source, entry->d_name);
 
@@ -125,7 +129,6 @@ void copyDir(char* source, char* destPath) {
 }
 
 i8 copyAny(char* source, char* destPath) {
-    printf("Source: %s\n", source);
     i8 ignoreCode = isIgnore(source);
 
     ignoreOutput(source, ignoreCode);
@@ -134,15 +137,15 @@ i8 copyAny(char* source, char* destPath) {
 
     i8 type = getType(source);
 
+    char pathToDest[PATH_SIZE];
+    sprintf(pathToDest, "%s\\%s", destPath, source);
+
     switch (type) {
     case 0:
-        char pathToDest[PATH_SIZE];
-        sprintf(pathToDest, "%s\\%s", destPath, source);
-
         copyFile(source, pathToDest);
         break;
     case 1:
-        copyDir(source, destPath);
+        copyDir(source, pathToDest);
         break;
     }
 

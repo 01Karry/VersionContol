@@ -12,5 +12,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 void handleInit();
+void handleAdd(int argc, char** argv);

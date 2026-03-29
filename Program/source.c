@@ -11,6 +11,10 @@ int main(int argc, char** argv) {
     if (strcmp(argv[1], INIT) == 0 && argc == 2) {
         handleInit();
     }
+
+    if (strcmp(argv[1], ADD) == 0) {
+        handleAdd(argc, argv);
+    }
     
     return 0;
 }

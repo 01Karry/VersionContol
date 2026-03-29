@@ -9,6 +9,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 u8 checkExtIgnore(char* name, char* ext) {
     size_t extLen = strlen(ext);
@@ -35,21 +36,20 @@ i8 checkInMcpIgnore(char* name) {
     FILE* pReject = fopen(IGNORE_FILE_NAME, "r");
     if (pReject == NULL) return -1;
 
-    char nameRej[PATH_SIZE];
+    char nameFromFile[PATH_SIZE];
 
-    while (fgets(nameRej, PATH_SIZE, pReject) != NULL) {
-        size_t len = strlen(nameRej);
+    while (fgets(nameFromFile, PATH_SIZE, pReject) != NULL) {
+        size_t len = strlen(nameFromFile);
 
-        if (nameRej[len - 1] == '\n') nameRej[len - 1] = '\0';
+        if (nameFromFile[len - 1] == '\n') nameFromFile[len - 1] = '\0';
 
-        printf("R : %s\n", nameRej);
-        if (nameRej[0] == '.' && checkExtIgnore(name, nameRej)) {
+        if (nameFromFile[0] == '.' && checkExtIgnore(name, nameFromFile)) {
             fclose(pReject);
-            return 1;
+            return 2;
         }
-        if (strncmp(name, nameRej, PATH_SIZE) == 0) {
+        if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
             fclose(pReject);
-            return 1;
+            return 2;
         }
     }
 
@@ -96,39 +96,60 @@ void copyFile(char* source, char* dest) {
 void copyDir(char* source, char* destPath) {
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
-        printf("Can't open source directory!\n");
-        exit(-1);
+        printf("Can't add %s\n", source);
+        return;
     }
 
     mkdir(destPath);
 
     DIR* pCopy = opendir(destPath);
-    if (pSource == NULL) {
+    if (pCopy == NULL) {
         printf("Can't open destination directory!\n");
-        exit(-1);
+        return;
     }
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
-        if (!isIgnore(entry->d_name)) {
-            char pathToSourceFile[PATH_SIZE];
-            sprintf(pathToSourceFile, "%s\\%s", source, entry->d_name);
-
-            char pathToDestFile[PATH_SIZE];
-            sprintf(pathToDestFile, "%s\\%s", destPath, entry->d_name);
-            
-            i8 type = getType(pathToSourceFile);
-            
-            switch (type) {
-            case 0:
-                copyFile(pathToSourceFile, pathToDestFile);
-                break;
-            case 1:
-                copyDir(pathToSourceFile, pathToDestFile);
-                break;
-            }
+        i8 ignoreCode = isIgnore(entry->d_name);
+        
+        if (ignoreCode != 0) {
+            ignoreOutput(entry->d_name, ignoreCode);
+            continue;
         }
+
+        char pathToSource[PATH_SIZE];
+        sprintf(pathToSource, "%s\\%s", source, entry->d_name);
+
+        char pathToDest[PATH_SIZE];
+        sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);
+        
+        copyAny(pathToSource, pathToDest);
     }
-    
+
     closedir(pCopy);
     closedir(pSource);
+}
+
+i8 copyAny(char* source, char* destPath) {
+    i8 ignoreCode = isIgnore(source);
+
+    ignoreOutput(source, ignoreCode);
+
+    if (ignoreCode) return ignoreCode;
+
+    i8 type = getType(source);
+
+    switch (type) {
+    case 0:
+        copyFile(source, destPath);
+        break;
+    case 1:
+        copyDir(source, destPath);
+        break;
+    }
+
+    return 0;
+}
+
+void ignoreOutput(char* name, i8 flag) {
+    if (flag == 2) printf("%s is ignored\n", name); 
 }

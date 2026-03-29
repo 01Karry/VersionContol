@@ -10,6 +10,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 i8 createRep() {
     mkdir(REP_NAME);
@@ -54,4 +55,16 @@ i8 setUserName() {
     gets_s(buff, USER_NAME_SIZE);
 
     return writeNameToCFG(buff);
+}
+
+i8 addToStage(char* fileName) {
+    if (strncmp(".", fileName, 1) == 0) {
+        copyDir(".", STAGE_FILE_NAME);
+        return 0;
+    }
+
+    char destPath[PATH_SIZE];
+    sprintf(destPath, "%s\\%s", STAGE_FILE_NAME, fileName);
+
+	return copyAny(fileName, destPath);
 }

@@ -9,6 +9,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 u8 checkExtIgnore(char* name, char* ext) {
     size_t extLen = strlen(ext);

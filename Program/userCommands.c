@@ -10,6 +10,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 i8 createRep() {
     mkdir(REP_NAME);

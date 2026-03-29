@@ -10,6 +10,7 @@
 
 #include "dirCopy.h"
 #include "userCommands.h"
+#include "repCheck.h"
 
 void handleInit() {
     if (createRep() == 1) {
@@ -35,6 +36,11 @@ void handleInit() {
 }
 
 void handleAdd(int argc, char** argv) {
+    if (isRepCreated() != 0) {
+        printf("You have to initialize repsitory!\n");
+        return;
+    }
+
     for (int i = 2; i < argc; i++) {
         addToStage(argv[i]);
     }

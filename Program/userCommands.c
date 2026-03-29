@@ -57,5 +57,10 @@ i8 setUserName() {
 }
 
 i8 addToStage(char* fileName) {
-	return copyAny(fileName, STAGE_FILE_NAME);
+    char destPath[PATH_SIZE];
+    sprintf(destPath, "%s\\%s", STAGE_FILE_NAME, fileName);
+
+    printf("s : %s\n d : %s\n", fileName, destPath);
+
+	return copyAny(fileName, destPath);
 }

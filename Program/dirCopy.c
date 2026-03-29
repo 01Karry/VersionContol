@@ -78,6 +78,8 @@ i8 getType(char* path) {
 }
 
 void copyFile(char* source, char* dest) {
+    printf("s : %s\n d : %s\n", source, dest);
+
     FILE* pSource = fopen(source, "rb");
     FILE* pDest = fopen(dest, "wb");
 
@@ -93,6 +95,8 @@ void copyFile(char* source, char* dest) {
 }
 
 void copyDir(char* source, char* destPath) {
+    printf("s : %s\n d : %s\n", source, destPath);
+
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
         printf("Can't add %s\n", source);
@@ -137,15 +141,14 @@ i8 copyAny(char* source, char* destPath) {
 
     i8 type = getType(source);
 
-    char pathToDest[PATH_SIZE];
-    sprintf(pathToDest, "%s\\%s", destPath, source);
-
     switch (type) {
     case 0:
-        copyFile(source, pathToDest);
+        printf("file\n");
+        copyFile(source, destPath);
         break;
     case 1:
-        copyDir(source, pathToDest);
+        printf("dir\n");
+        copyDir(source, destPath);
         break;
     }
 

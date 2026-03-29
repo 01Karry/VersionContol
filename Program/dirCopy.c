@@ -33,27 +33,27 @@ u8 checkBaseIgnore(char* name) {
 }
 
 i8 checkInMcpIgnore(char* name) {
-    FILE* pReject = fopen(IGNORE_FILE_NAME, "r");
-    if (pReject == NULL) return -1;
+    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
+    if (pIgnore == NULL) return -1;
 
     char nameFromFile[PATH_SIZE];
 
-    while (fgets(nameFromFile, PATH_SIZE, pReject) != NULL) {
+    while (fgets(nameFromFile, PATH_SIZE, pIgnore) != NULL) {
         size_t len = strlen(nameFromFile);
 
         if (nameFromFile[len - 1] == '\n') nameFromFile[len - 1] = '\0';
 
         if (nameFromFile[0] == '.' && checkExtIgnore(name, nameFromFile)) {
-            fclose(pReject);
+            fclose(pIgnore);
             return 2;
         }
         if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
-            fclose(pReject);
+            fclose(pIgnore);
             return 2;
         }
     }
 
-    fclose(pReject);
+    fclose(pIgnore);
     return 0;
 }
 
@@ -118,6 +118,13 @@ void copyDir(char* source, char* destPath) {
 
         char pathToSource[PATH_SIZE];
         sprintf(pathToSource, "%s\\%s", source, entry->d_name);
+
+        ignoreCode = isIgnore(pathToSource);
+
+        if (ignoreCode != 0) {
+            ignoreOutput(entry->d_name, ignoreCode);
+            continue;
+        }
 
         char pathToDest[PATH_SIZE];
         sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);

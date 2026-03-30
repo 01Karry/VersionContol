@@ -58,7 +58,7 @@ i8 setUserName() {
 }
 
 i8 addToStage(char* fileName) {
-    if (strncmp(".", fileName, 1) == 0) {
+    if (strcmp(".", fileName) == 0) {
         copyDir(".", STAGE_FILE_NAME);
         return 0;
     }

@@ -10,10 +10,16 @@ int main(int argc, char** argv) {
 
     if (strcmp(argv[1], INIT) == 0 && argc == 2) {
         handleInit();
+        return 0;
     }
 
     if (strcmp(argv[1], ADD) == 0) {
         handleAdd(argc, argv);
+        return 0;
+    }
+
+    if (strcmp(argv[1], COMMIT) == 0 && argc == 3) {
+        handleCommit(argv[2]);
     }
     
     return 0;

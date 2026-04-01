@@ -16,3 +16,4 @@
 
 void handleInit();
 void handleAdd(int argc, char** argv);
+void handleCommit(char* message);

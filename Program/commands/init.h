@@ -7,3 +7,4 @@ i8 createRep();
 i8 makeCfg();
 i8 writeNameToCFG(char* name);
 i8 setUserName();
+void handleInit();

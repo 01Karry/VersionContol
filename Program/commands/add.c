@@ -11,3 +11,14 @@ i8 addToStage(char* fileName) {
 
 	return copyAny(fileName, destPath);
 }
+
+void handleAdd(int argc, char** argv) {
+    if (isRepCreated() != 0) {
+        printf("You have to initialize repsitory!\n");
+        return;
+    }
+
+    for (int i = 2; i < argc; i++) {
+        addToStage(argv[i]);
+    }
+}

@@ -1,4 +1,4 @@
-#include "ignore.h"
+#include "ignoreUtils.h"
 
 i8 getType(char* path) {
     struct stat Stats;

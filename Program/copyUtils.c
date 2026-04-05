@@ -29,7 +29,7 @@ void copyFile(char* source, char* dest) {
 void copyDir(char* source, char* destPath) {
     DIR* pSource = opendir(source);
     if (pSource == NULL) {
-        printf("Can't add %s\n", source);
+        printf("Can't open %s\n", source);
         return;
     }
 

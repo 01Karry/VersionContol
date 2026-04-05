@@ -1,5 +1,8 @@
 #include "commands\init.h"
 
+#include "inclds.h"
+#include "defs.h"
+
 i8 createRep() {
     mkdir(REP_NAME);
     mkdir(VERSIONS_FILE);

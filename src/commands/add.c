@@ -15,7 +15,7 @@ i8 addToStage(char* fileName) {
 }
 
 void handleAdd(int argc, char** argv) {
-    if (isRepCreated() != 0) {
+    if (isRepCreated() == 0) {
         printf("You have to initialize repsitory!\n");
         return;
     }

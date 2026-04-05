@@ -1,13 +1,6 @@
 #pragma once
 
-#include <stdio.h>
-#include <dirent.h>
-#include <direct.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <sys/stat.h>
+#include "header.h"
 
 #define PATH_SIZE 512
 #define BUFF_SIZE 512

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dirCopy.h"
+#include "header.h"
 
 #define REP_NAME "mcpRep"
 #define CONFIG_FILE_NAME REP_NAME"\\config.dat"

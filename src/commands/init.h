@@ -1,8 +1,10 @@
 #pragma once
 
+#include "inclds.h"
+#include "defs.h"
+
 i8 createRep();
 i8 makeCfg();
 i8 writeNameToCFG(char* name);
 i8 setUserName();
-i8 addToStage(char* name);
-i8 addcDataFile(char* message);
+void handleInit(int argc, char** argv);

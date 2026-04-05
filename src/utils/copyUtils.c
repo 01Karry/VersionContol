@@ -1,15 +1,5 @@
-#include <stdio.h>
-#include <dirent.h>
-#include <direct.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <sys/stat.h>
-
-#include "dirCopy.h"
-#include "userCommands.h"
-#include "repCheck.h"
+#include "utils\copyUtils.h"
+#include "utils\ignoreUtils.h"
 
 void copyFile(char* source, char* dest) {
     FILE* pSource = fopen(source, "rb");
@@ -63,7 +53,7 @@ void copyDir(char* source, char* destPath) {
 }
 
 i8 copyAny(char* source, char* destPath) {
-    i8 ignoreCode = isIgnore(source);
+    i8 ignoreCode = isIgnore(".", source);
 
     ignoreOutput(source, ignoreCode);
 

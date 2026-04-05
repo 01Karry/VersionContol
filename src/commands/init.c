@@ -1,4 +1,4 @@
-#include "init.h"
+#include "commands\init.h"
 
 i8 createRep() {
     mkdir(REP_NAME);
@@ -45,22 +45,28 @@ i8 setUserName() {
     return writeNameToCFG(buff);
 }
 
-void handleInit() {
+void handleInit(int argc, char** argv) {
+    if (argc != 2) {
+        printf("Incorrect usage!\n");
+        return;
+    }
+
     if (createRep() == 1) {
         printf("Can't create Repository\n");
         return;
     }
 
     if (makeCfg() == 1) {
-        printf("Can't create config\n");
+        printf("Can't create config file\n");
         return;
     }
     
-    FILE* pReject = fopen(IGNORE_FILE_NAME, "w");
-    if (pReject == NULL) {
+    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "w");
+    if (pIgnore == NULL) {
         printf("Can't create %s\n", IGNORE_FILE_NAME);
         return;
     }
+    fclose(pIgnore);
 
     if (setUserName() == 1) {
         printf("Can't set user name\n");

@@ -1,4 +1,6 @@
-#include "add.h"
+#include "commands\add.h"
+#include "utils\copyUtils.h"
+#include "utils\repUtils.h"
 
 i8 addToStage(char* fileName) {
     if (strcmp(".", fileName) == 0) {

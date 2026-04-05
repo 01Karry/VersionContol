@@ -53,7 +53,7 @@ void copyDir(char* source, char* destPath) {
 }
 
 i8 copyAny(char* source, char* destPath) {
-    i8 ignoreCode = isIgnore(".", source);
+    i8 ignoreCode = isIgnore("", source);
 
     ignoreOutput(source, ignoreCode);
 

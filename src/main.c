@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    // if (strcmp(argv[1], COMMIT) == 0 && argc == 3) {
+    // if (strcmp(argv[1], "rm") == 0 && argc == 3) {
     //     handleCommit(argv[2]);
     // }
     

@@ -34,3 +34,15 @@ typedef struct Config {
 } Config;
 
 #define CDATA_FILE_NAME "cdata.dat"
+#define MESSAGE_SIZE 256
+
+#define CDATA_PREW_OFFSET 0
+#define CDATA_MESSAGE_OFFSET 4
+
+typedef struct DataTime {
+    u32 year;
+    u8 data;
+    u8 hour;
+    u8 minutes;
+    u8 seconds;
+}

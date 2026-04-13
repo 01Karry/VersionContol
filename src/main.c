@@ -1,5 +1,6 @@
 #include "commands\init.h"
 #include "commands\add.h"
+#include "commands\commit.h"
 
 int main(int argc, char** argv) {
     if (argc < 2) {
@@ -17,9 +18,9 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    // if (strcmp(argv[1], "rm") == 0 && argc == 3) {
-    //     handleCommit(argv[2]);
-    // }
+    if (strcmp(argv[1], COMMIT) == 0 && argc == 3) {
+        handleCommit(argc, argv);
+    }
     
     return 0;
 }

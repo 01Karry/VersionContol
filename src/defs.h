@@ -32,3 +32,12 @@ typedef struct Config {
     u32 commitCount;
     u32 currCommit;
 } Config;
+
+#define CDATA_FILE_NAME "cdata.dat"
+#define MESSAGE_SIZE 256
+
+#define CDATA_PREW_OFFSET 0
+#define CDATA_MESSAGE_OFFSET 4
+
+#define STR_DATE_SIZE 9
+#define STR_TIME_SIZE 9

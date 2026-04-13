@@ -32,3 +32,5 @@ typedef struct Config {
     u32 commitCount;
     u32 currCommit;
 } Config;
+
+#define CDATA_FILE_NAME "cdata.dat"

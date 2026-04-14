@@ -5,11 +5,11 @@ i8 isRepCreated() {
     if (pRep == NULL) return 0;
     closedir(pRep);
 
-    DIR* pStage = opendir(STAGE_FILE_NAME);
+    DIR* pStage = opendir(STAGE_DIR_NAME);
     if (pStage == NULL) return 0;
     closedir(pStage);
 
-    DIR* pVersions = opendir(VERSIONS_FILE);
+    DIR* pVersions = opendir(VERSIONS_DIR);
     if (pVersions == NULL) return 0;
     closedir(pVersions);
 

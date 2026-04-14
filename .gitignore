@@ -51,8 +51,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-VCreject.txt
-nestedDirTest
-VCconfig.bin
-
 test.c

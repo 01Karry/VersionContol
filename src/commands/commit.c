@@ -2,6 +2,7 @@
 #include "utils\repUtils.h"
 #include "utils\copyUtils.h"
 #include "utils\rmUtils.h"
+#include "utils\ignoreUtils.h"
 
 #include "inclds.h"
 #include <time.h>
@@ -15,7 +16,7 @@ void handleCommit(int argc, char** argv) {
     writeCData(argv[2]);
 
     copyStageToCommit();
-    rmStage();
+    clearStage();
 
     updateConfig();
 }
@@ -24,7 +25,7 @@ void getPathToCommitDir(char* path) {
     Config cfg;
     getConfig(&cfg);
 
-    sprintf(path, "%s\\%s%d", VERSIONS_FILE, "c", cfg.commitCount);
+    sprintf(path, "%s\\%s%d", VERSIONS_DIR, "c", cfg.commitCount);
 }
 
 void makeCommitDir() {
@@ -40,7 +41,7 @@ i8 writeCData(char message[MESSAGE_SIZE]) {
     getConfig(&cfg);
 
     char cDataPath[PATH_SIZE];
-    sprintf(cDataPath, "%s\\%s%d\\%s", VERSIONS_FILE, "c", cfg.commitCount, CDATA_FILE_NAME);
+    sprintf(cDataPath, "%s\\%s%d\\%s", VERSIONS_DIR, "c", cfg.commitCount, CDATA_FILE_NAME);
 
     time_t currTime = time(NULL);
     struct tm* time = localtime(&currTime);
@@ -96,11 +97,21 @@ void copyStageToCommit() {
     char path[PATH_SIZE];
     getPathToCommitDir(path);
 
-    copyAny(STAGE_FILE_NAME, path);
+    copyAny(STAGE_DIR_NAME, path);
 }
 
-void rmStage() {
-    rmAny(STAGE_FILE_NAME);
+void clearStage() {
+    DIR* pDir = opendir(STAGE_DIR_NAME);
+    if (pDir == NULL) return;
 
-    mkdir(STAGE_FILE_NAME);
+    for (struct dirent* entry = readdir(pDir); entry != NULL; entry = readdir(pDir)) {
+        if (checkBaseIgnore(entry->d_name) == 0) {
+            char fullPath[PATH_SIZE];
+            sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, entry->d_name);
+
+            rmAny(fullPath);
+        }
+    }
+
+    closedir(pDir);
 }

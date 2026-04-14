@@ -5,8 +5,8 @@
 
 i8 createRep() {
     mkdir(REP_NAME);
-    mkdir(VERSIONS_FILE);
-    mkdir(STAGE_FILE_NAME);
+    mkdir(VERSIONS_DIR);
+    mkdir(STAGE_DIR_NAME);
 
     makeCfg();
     

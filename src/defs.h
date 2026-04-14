@@ -13,8 +13,8 @@ typedef uint8_t u8;
 
 #define REP_NAME "mcpRep"
 #define CONFIG_FILE_NAME REP_NAME"\\config.dat"
-#define VERSIONS_FILE REP_NAME"\\Versions"
-#define STAGE_FILE_NAME REP_NAME"\\Stage"
+#define VERSIONS_DIR REP_NAME"\\Versions"
+#define STAGE_DIR_NAME REP_NAME"\\Stage"
 
 #define INIT "init"
 #define USER "user"

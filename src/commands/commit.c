@@ -97,7 +97,7 @@ void copyStageToCommit() {
     char path[PATH_SIZE];
     getPathToCommitDir(path);
 
-    copyAny(STAGE_DIR_NAME, path);
+    noIgnoreCopyAny(STAGE_DIR_NAME, path);
 }
 
 void clearStage() {

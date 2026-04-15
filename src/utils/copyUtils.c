@@ -72,3 +72,48 @@ i8 copyAny(char* source, char* destPath) {
 
     return 0;
 }
+
+void noIgnoreCopyAny(char* source, char* destPath) {
+    i8 type = getType(source);
+
+    switch (type) {
+    case 0:
+        copyFile(source, destPath);
+        break;
+    case 1:
+        noIgnoreCopyDir(source, destPath);
+        break;
+    }
+}
+
+void noIgnoreCopyDir(char* source, char* destPath) {
+    DIR* pSource = opendir(source);
+    if (pSource == NULL) {
+        printf("Can't open %s\n", source);
+        return;
+    }
+
+    mkdir(destPath);
+
+    DIR* pCopy = opendir(destPath);
+    if (pCopy == NULL) {
+        printf("Can't open destination directory!\n");
+        return;
+    }
+
+    for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
+        if (checkBaseIgnore(entry->d_name) == 0) {
+            char pathToSource[PATH_SIZE];
+            sprintf(pathToSource, "%s\\%s", source, entry->d_name);
+
+            char pathToDest[PATH_SIZE];
+            sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);
+        
+            noIgnoreCopyAny(pathToSource, pathToDest);
+        }
+    }
+
+
+    closedir(pCopy);
+    closedir(pSource);
+}

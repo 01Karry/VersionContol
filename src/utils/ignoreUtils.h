@@ -9,3 +9,4 @@ u8 checkBaseIgnore(char* name);
 i8 checkInMcpIgnore(char* name);
 i8 isIgnore(char* source, char* name);
 void ignoreOutput(char* name, i8 flag);
+char** createIgnoreArray(u32* size);

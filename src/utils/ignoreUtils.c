@@ -30,7 +30,7 @@ u8 checkBaseIgnore(char* name) {
     return 0;
 }
 
-/* Возвращает 2 что бы отдчать от baseingore*/
+/* Возвращает 2 что бы отлчать от baseingore*/
 i8 checkInMcpIgnore(char* name) {
     FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
     if (pIgnore == NULL) return -1;
@@ -46,6 +46,7 @@ i8 checkInMcpIgnore(char* name) {
             fclose(pIgnore);
             return 2;
         }
+        
         if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
             fclose(pIgnore);
             return 2;
@@ -75,4 +76,44 @@ i8 isIgnore(char* source, char* name) {
 
 void ignoreOutput(char* name, i8 flag) {
     if (flag == 2) printf("%s is ignored\n", name); 
+}
+
+char** createIgnoreArray(u32* size) {
+    *size = 0;
+
+    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
+    if (pIgnore == NULL) return NULL;
+
+    char nameFromFile[PATH_SIZE];
+
+    while (fgets(nameFromFile, PATH_SIZE, pIgnore) != NULL) ++*size;
+    rewind(pIgnore);
+
+    char** ignoreArr = malloc(sizeof(char*) * *size);
+    if (ignoreArr == NULL) {
+        fclose(pIgnore);
+        *size = 0;
+
+        return NULL;
+    }
+
+    for (u32 i = 0; i < *size; i++) {
+        ignoreArr[i] = malloc(sizeof(char) * PATH_SIZE);
+        if (ignoreArr[i] == NULL) {
+            fclose(pIgnore);
+            freeIgnoreArr(ignoreArr, i);
+            *size = 0;
+
+            return NULL;
+        }
+
+        fgets(ignoreArr[i], PATH_SIZE, pIgnore);
+    }
+
+    return ignoreArr;
+}
+
+void freeIgnoreArr(char** arr, u32 size) {
+    for (u32 i = 0; i < size; i++) free(arr[i]);
+    free(arr);
 }

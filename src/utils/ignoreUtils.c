@@ -30,29 +30,23 @@ u8 checkBaseIgnore(char* name) {
     return 0;
 }
 
-/* Возвращает 2 что бы отдчать от baseingore*/
+IgnoreSt ignoreVal = { NULL, 0 };
+
+/* Возвращает 2 что бы отлчать от baseingore*/
 i8 checkInMcpIgnore(char* name) {
-    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
-    if (pIgnore == NULL) return -1;
+    if (ignoreVal.arr == NULL) createIgnoreArray();
+    if (ignoreVal.arr == NULL) return -1;
 
-    char nameFromFile[PATH_SIZE];
-
-    while (fgets(nameFromFile, PATH_SIZE, pIgnore) != NULL) {
-        size_t len = strlen(nameFromFile);
-
-        if (nameFromFile[len - 1] == '\n') nameFromFile[len - 1] = '\0';
-
-        if (nameFromFile[0] == '.' && checkExtIgnore(name, nameFromFile)) {
-            fclose(pIgnore);
+    for (u32 i = 0; i < ignoreVal.size; i++) {
+        if (ignoreVal.arr[i][0] == '.' && checkExtIgnore(name, ignoreVal.arr[i])) {
             return 2;
         }
-        if (strncmp(name, nameFromFile, PATH_SIZE) == 0) {
-            fclose(pIgnore);
+
+        if (strncmp(name, ignoreVal.arr[i], PATH_SIZE) == 0) {
             return 2;
         }
     }
 
-    fclose(pIgnore);
     return 0;
 }
 
@@ -75,4 +69,47 @@ i8 isIgnore(char* source, char* name) {
 
 void ignoreOutput(char* name, i8 flag) {
     if (flag == 2) printf("%s is ignored\n", name); 
+}
+
+void createIgnoreArray() {
+    ignoreVal.size = 0;
+
+    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
+    if (pIgnore == NULL) return;
+
+    char buff[PATH_SIZE];
+
+    while (fgets(buff, PATH_SIZE, pIgnore) != NULL) ++ignoreVal.size;
+    rewind(pIgnore);
+
+    ignoreVal.arr = malloc(sizeof(char*) * ignoreVal.size);
+    if (ignoreVal.arr == NULL) {
+        fclose(pIgnore);
+        return;
+    }
+
+    for (u32 i = 0; i < ignoreVal.size; i++) {
+        ignoreVal.arr[i] = malloc(sizeof(char) * PATH_SIZE);
+        if (ignoreVal.arr[i] == NULL) {
+            fclose(pIgnore);
+            freeIgnoreArr();
+
+            return;
+        }
+
+        fgets(ignoreVal.arr[i], PATH_SIZE, pIgnore);
+
+        size_t len = strlen(ignoreVal.arr[i]);
+        if (ignoreVal.arr[i][len - 1] == '\n') ignoreVal.arr[i][len - 1] = '\0';
+    }
+
+    fclose(pIgnore);
+}
+
+void freeIgnoreArr() {
+    for (u32 i = 0; i < ignoreVal.size; i++) free(ignoreVal.arr[i]);
+    free(ignoreVal.arr);
+
+    ignoreVal.arr = NULL;
+    ignoreVal.size = 0;
 }

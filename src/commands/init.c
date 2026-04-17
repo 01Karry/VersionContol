@@ -3,6 +3,35 @@
 #include "inclds.h"
 #include "defs.h"
 
+void handleInit(int argc, char** argv) {
+    if (argc != 2) {
+        printf("Incorrect usage!\n");
+        return;
+    }
+
+    if (createRep() == 1) {
+        printf("Can't create Repository\n");
+        return;
+    }
+
+    if (makeCfg() == 1) {
+        printf("Can't create config file\n");
+        return;
+    }
+    
+    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "w");
+    if (pIgnore == NULL) {
+        printf("Can't create %s\n", IGNORE_FILE_NAME);
+        return;
+    }
+    fclose(pIgnore);
+
+    if (setUserName() == 1) {
+        printf("Can't set user name\n");
+        return;
+    }
+}
+
 i8 createRep() {
     mkdir(REP_NAME);
     mkdir(VERSIONS_DIR);
@@ -48,31 +77,3 @@ i8 setUserName() {
     return writeNameToCFG(buff);
 }
 
-void handleInit(int argc, char** argv) {
-    if (argc != 2) {
-        printf("Incorrect usage!\n");
-        return;
-    }
-
-    if (createRep() == 1) {
-        printf("Can't create Repository\n");
-        return;
-    }
-
-    if (makeCfg() == 1) {
-        printf("Can't create config file\n");
-        return;
-    }
-    
-    FILE* pIgnore = fopen(IGNORE_FILE_NAME, "w");
-    if (pIgnore == NULL) {
-        printf("Can't create %s\n", IGNORE_FILE_NAME);
-        return;
-    }
-    fclose(pIgnore);
-
-    if (setUserName() == 1) {
-        printf("Can't set user name\n");
-        return;
-    }
-}

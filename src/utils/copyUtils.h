@@ -3,7 +3,7 @@
 #include "inclds.h"
 #include "defs.h"
 
-#define PATH_SIZE 512
+#define PATH_MAX 512
 #define BUFF_SIZE 512
 
 #define IGNORE_FILE_NAME "mcpIgnore.txt"

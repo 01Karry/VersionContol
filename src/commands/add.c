@@ -8,7 +8,7 @@ i8 addToStage(char* fileName) {
         return 0;
     }
 
-    char destPath[PATH_SIZE];
+    char destPath[PATH_MAX];
     sprintf(destPath, "%s\\%s", STAGE_DIR_NAME, fileName);
 
 	return copyAny(fileName, destPath);

@@ -12,7 +12,7 @@ i8 rmNEDir(char* path) {
 
     for (struct dirent* entry = readdir(pDir); entry != NULL; entry = readdir(pDir)) {
         if (isIgnore(path, entry->d_name) == 0) {
-            char fullPath[PATH_SIZE];
+            char fullPath[PATH_MAX];
             sprintf(fullPath, "%s\\%s", path, entry->d_name);
 
             rmAny(fullPath);

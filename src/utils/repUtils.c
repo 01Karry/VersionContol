@@ -43,3 +43,21 @@ i8 getConfig(Config* cfg) {
 
     return 0;
 }
+
+i8 getCdata(Cdata_t* dest, u32 commitIndex) {
+    char pathToCdata[PATH_MAX];
+    sprintf(pathToCdata, "%s\\c%d", VERSIONS_DIR, commitIndex);
+
+    FILE* pCData = fopen(pathToCdata, "r");
+    if (pCData == NULL) return -1;
+
+    fread(&dest->parent, sizeof(dest->parent), 1, pCData);
+    fread(&dest->message, sizeof(dest->message), 1, pCData);
+    fread(&dest->author, sizeof(dest->author), 1, pCData);
+    fread(&dest->date, sizeof(dest->date), 1, pCData);
+    fread(&dest->time, sizeof(dest->time), 1, pCData);
+
+    fclose(pCData);
+
+    return 0;
+}

@@ -2,7 +2,6 @@
 
 #include "inclds.h"
 
-#define PATH_SIZE 512
 #define BUFF_SIZE 512
 
 typedef int8_t i8;
@@ -42,3 +41,11 @@ typedef struct Config {
 
 #define STR_DATE_SIZE 9
 #define STR_TIME_SIZE 9
+
+typedef struct Cdata_t {
+    u32 parent;
+    char message[MESSAGE_SIZE];
+    char author[USER_NAME_SIZE];
+    char date[STR_DATE_SIZE];
+    char time[STR_TIME_SIZE];
+} Cdata_t;

@@ -21,10 +21,10 @@ u8 checkExtIgnore(char* name, char* ext) {
 u8 checkBaseIgnore(char* name) {
     if (name == NULL) return -1;
 
-    char baseReject[][PATH_SIZE] = { ".", "..", REP_NAME };
+    char baseReject[][PATH_MAX] = { ".", "..", REP_NAME };
 
     for (int i = 0; i < sizeof(baseReject) / sizeof(baseReject[0]); i++) {
-        if (strncmp(name, baseReject[i], PATH_SIZE) == 0) return 1;
+        if (strncmp(name, baseReject[i], PATH_MAX) == 0) return 1;
     }
 
     return 0;
@@ -42,7 +42,7 @@ i8 checkInMcpIgnore(char* name) {
             return 2;
         }
 
-        if (strncmp(name, ignoreVal.arr[i], PATH_SIZE) == 0) {
+        if (strncmp(name, ignoreVal.arr[i], PATH_MAX) == 0) {
             return 2;
         }
     }
@@ -53,7 +53,7 @@ i8 checkInMcpIgnore(char* name) {
 i8 isIgnore(char* source, char* name) {
     if (name == NULL) return -1;
 
-    char fullPath[PATH_SIZE];
+    char fullPath[PATH_MAX];
     sprintf(fullPath, "%s\\%s", source, name);
     
     if (checkBaseIgnore(name) || checkBaseIgnore(fullPath)) return 1;
@@ -72,24 +72,25 @@ void ignoreOutput(char* name, i8 flag) {
 }
 
 void createIgnoreArray() {
+    u32 malSize = 0;
     ignoreVal.size = 0;
 
     FILE* pIgnore = fopen(IGNORE_FILE_NAME, "r");
     if (pIgnore == NULL) return;
 
-    char buff[PATH_SIZE];
+    char buff[PATH_MAX];
 
-    while (fgets(buff, PATH_SIZE, pIgnore) != NULL) ++ignoreVal.size;
+    while (fgets(buff, PATH_MAX, pIgnore) != NULL) ++malSize;
     rewind(pIgnore);
 
-    ignoreVal.arr = malloc(sizeof(char*) * ignoreVal.size);
+    ignoreVal.arr = malloc(sizeof(char*) * malSize);
     if (ignoreVal.arr == NULL) {
         fclose(pIgnore);
         return;
     }
 
-    for (u32 i = 0; i < ignoreVal.size; i++) {
-        ignoreVal.arr[i] = malloc(sizeof(char) * PATH_SIZE);
+    for (u32 i = 0; i < malSize; i++) {
+        ignoreVal.arr[i] = malloc(sizeof(char) * PATH_MAX);
         if (ignoreVal.arr[i] == NULL) {
             fclose(pIgnore);
             freeIgnoreArr();
@@ -97,7 +98,9 @@ void createIgnoreArray() {
             return;
         }
 
-        fgets(ignoreVal.arr[i], PATH_SIZE, pIgnore);
+        ignoreVal.size++;
+
+        fgets(ignoreVal.arr[i], PATH_MAX, pIgnore);
 
         size_t len = strlen(ignoreVal.arr[i]);
         if (ignoreVal.arr[i][len - 1] == '\n') ignoreVal.arr[i][len - 1] = '\0';

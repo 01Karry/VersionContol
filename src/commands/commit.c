@@ -29,7 +29,7 @@ void getPathToCommitDir(char* path) {
 }
 
 void makeCommitDir() {
-    char path[PATH_SIZE];
+    char path[PATH_MAX];
     getPathToCommitDir(path);
 
     mkdir(path);
@@ -40,7 +40,7 @@ i8 writeCData(char message[MESSAGE_SIZE]) {
     Config cfg;
     getConfig(&cfg);
 
-    char cDataPath[PATH_SIZE];
+    char cDataPath[PATH_MAX];
     sprintf(cDataPath, "%s\\%s%d\\%s", VERSIONS_DIR, "c", cfg.commitCount, CDATA_FILE_NAME);
 
     time_t currTime = time(NULL);
@@ -63,7 +63,7 @@ i8 writeCData(char message[MESSAGE_SIZE]) {
     if (pCdata == NULL) return 1;
 
     fwrite(&cfg.currCommit, sizeof(cfg.currCommit), 1, pCdata);
-    fwrite(formatedMessage, MESSAGE_SIZE, 1, pCdata);
+    fwrite(formatedMessage, sizeof(formatedMessage), 1, pCdata);
     fwrite(cfg.userName, sizeof(cfg.userName), 1, pCdata);
     fwrite(strDate, sizeof(strDate), 1, pCdata);
     fwrite(strTime, sizeof(strTime), 1, pCdata);
@@ -94,7 +94,7 @@ i8 updateConfig() {
 }
 
 void copyStageToCommit() {
-    char path[PATH_SIZE];
+    char path[PATH_MAX];
     getPathToCommitDir(path);
 
     noIgnoreCopyAny(STAGE_DIR_NAME, path);
@@ -106,7 +106,7 @@ void clearStage() {
 
     for (struct dirent* entry = readdir(pDir); entry != NULL; entry = readdir(pDir)) {
         if (checkBaseIgnore(entry->d_name) == 0) {
-            char fullPath[PATH_SIZE];
+            char fullPath[PATH_MAX];
             sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, entry->d_name);
 
             rmAny(fullPath);

@@ -39,10 +39,10 @@ void copyDir(char* source, char* destPath) {
             continue;
         }
 
-        char pathToSource[PATH_SIZE];
+        char pathToSource[PATH_MAX];
         sprintf(pathToSource, "%s\\%s", source, entry->d_name);
 
-        char pathToDest[PATH_SIZE];
+        char pathToDest[PATH_MAX];
         sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);
         
         copyAny(pathToSource, pathToDest);
@@ -103,10 +103,10 @@ void noIgnoreCopyDir(char* source, char* destPath) {
 
     for (struct dirent* entry = readdir(pSource); entry != NULL; entry = readdir(pSource)) {
         if (checkBaseIgnore(entry->d_name) == 0) {
-            char pathToSource[PATH_SIZE];
+            char pathToSource[PATH_MAX];
             sprintf(pathToSource, "%s\\%s", source, entry->d_name);
 
-            char pathToDest[PATH_SIZE];
+            char pathToDest[PATH_MAX];
             sprintf(pathToDest, "%s\\%s", destPath, entry->d_name);
         
             noIgnoreCopyAny(pathToSource, pathToDest);

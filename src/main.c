@@ -1,6 +1,7 @@
 #include "commands\init.h"
 #include "commands\add.h"
 #include "commands\commit.h"
+#include "commands\log.h"
 #include "utils\ignoreUtils.h"
 
 int main(int argc, char** argv) {
@@ -21,6 +22,10 @@ int main(int argc, char** argv) {
 
     if (strcmp(argv[1], COMMIT) == 0 && argc == 3) {
         handleCommit(argc, argv);
+    }
+
+    if (strcmp(argv[1], LOG) == 0) {
+        handleLog(argc, argv);
     }
 
     freeIgnoreArr();

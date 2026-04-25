@@ -4,6 +4,8 @@
 
 #define BUFF_SIZE 512
 
+#define PATH_SIZE 512
+
 typedef int8_t i8;
 typedef uint8_t u8;
 typedef uint32_t u32;
@@ -20,6 +22,7 @@ typedef int32_t i32;
 #define USER "user"
 #define COMMIT "commit"
 #define ADD "add"
+#define LOG "log"
 
 #define USER_NAME_SIZE 128
 
@@ -49,3 +52,9 @@ typedef struct Cdata_t {
     char date[STR_DATE_SIZE];
     char time[STR_TIME_SIZE];
 } Cdata_t;
+
+#define OFFSET_FOR_PARENT 0
+#define OFFSET_FOR_MESSAGE 4
+#define OFFSET_FOR_AUTHOR 260
+#define OFFSET_FOR_DATE 388
+#define OFFSET_FOR_TIME 397

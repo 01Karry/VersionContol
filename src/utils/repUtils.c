@@ -45,16 +45,26 @@ i8 getConfig(Config* cfg) {
 }
 
 i8 getCdata(Cdata_t* dest, u32 commitIndex) {
-    char pathToCdata[PATH_MAX];
-    sprintf(pathToCdata, "%s\\c%d", VERSIONS_DIR, commitIndex);
+    char pathToCdata[PATH_SIZE];
+    sprintf(pathToCdata, "%s\\c%d\\%s", VERSIONS_DIR, commitIndex, CDATA_FILE_NAME);
+
 
     FILE* pCData = fopen(pathToCdata, "r");
     if (pCData == NULL) return -1;
-
+    
+    fseek(pCData, OFFSET_FOR_PARENT, SEEK_SET);
     fread(&dest->parent, sizeof(dest->parent), 1, pCData);
+
+    fseek(pCData, OFFSET_FOR_MESSAGE, SEEK_SET);
     fread(&dest->message, sizeof(dest->message), 1, pCData);
+
+    fseek(pCData, OFFSET_FOR_AUTHOR, SEEK_SET);
     fread(&dest->author, sizeof(dest->author), 1, pCData);
+
+    fseek(pCData, OFFSET_FOR_DATE, SEEK_SET);
     fread(&dest->date, sizeof(dest->date), 1, pCData);
+
+    fseek(pCData, OFFSET_FOR_TIME, SEEK_SET);
     fread(&dest->time, sizeof(dest->time), 1, pCData);
 
     fclose(pCData);

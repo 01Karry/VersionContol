@@ -9,3 +9,5 @@ i8 getConfig(Config* cfg);
 i8 getCdata(Cdata_t* dest, u32 commitIndex);
 i8 isStageEmpty();
 void printEmptyStageError();
+u8 isValidIndex(u32 commitIndex);
+void setCurrCommit(u32 index);

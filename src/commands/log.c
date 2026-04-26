@@ -64,13 +64,6 @@ i8 logCommit(u32 commitIndex) {
     return 0;
 }
 
-u8 isValidIndex(u32 commitIndex) {
-    Config cfgData;
-    getConfig(&cfgData);
-
-    return commitIndex < cfgData.commitCount;
-}
-
 void printLogErrMessage() {
     printf("Wrong usage!\n");
     printf("Use 'mcp log' to get all commits\n");

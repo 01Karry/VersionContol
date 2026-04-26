@@ -27,7 +27,7 @@ i8 rmNEDir(char* path) {
 }
 
 i8 rmAny(char* path) {
-    if (isIgnore("", path) != 0) {
+    if (isIgnore(".", path) != 0) {
         printf("ignore\n");
         return 0;
     }

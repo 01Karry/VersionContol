@@ -93,3 +93,20 @@ i8 isStageEmpty() {
 void printEmptyStageError() {
     printf("You need to add files to Stage!\n");
 }
+
+u8 isValidIndex(u32 commitIndex) {
+    Config cfgData;
+    getConfig(&cfgData);
+
+    return commitIndex < cfgData.commitCount;
+}
+
+void setCurrCommit(u32 index) {
+    FILE* pCfg = fopen(CONFIG_FILE_NAME, "r+");
+    if (pCfg == NULL) return;
+
+    fseek(pCfg, OFFSET_FOR_CURRENT, SEEK_SET);
+    fwrite(&index, sizeof (index), 1, pCfg);
+
+    fclose(pCfg);
+}

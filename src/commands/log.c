@@ -5,27 +5,37 @@
 
 void handleLog(int argc, char** argv) {
     i32 option;
-    u32 commitIndex;
+
+    optind = 2;
 
     if (argc == 2) {
         logAllCommits();
         return;
     }
 
-    while ((option = getopt(argc, argv + 1, "i:r")) != -1) {
+    if ((option = getopt(argc, argv, "i:rl")) != -1) {
         switch (option) {
-        case 'i':
-            commitIndex = atoi(optarg);
+        case 'i': {
+            u32 commitIndex = atoi(optarg);
 
             if (logCommit(commitIndex) != 0) {
-                //printLogErrMessage();
+                printLogErrMessage();
             }
             break;
-        case 'r':
-            //printCurrPathCommits();
+        }
+        case 'r': {
+            Config cfg;
+            getConfig(&cfg);
+
+            printCurrPathCommits(cfg.currCommit);
+
+            break;
+        }
+        case 'l':
+            printPrevCommit();
             break;
         case '?':
-            //printLogErrMessage();
+            printLogErrMessage();
             break;
         }
     }
@@ -59,4 +69,33 @@ u8 isValidIndex(u32 commitIndex) {
     getConfig(&cfgData);
 
     return commitIndex < cfgData.commitCount;
+}
+
+void printLogErrMessage() {
+    printf("Wrong usage!\n");
+    printf("Use 'mcp log' to get all commits\n");
+    printf("Use 'mcp log -i N' to print commit N\n");
+    printf("Use 'mcp log -r' to print path from curr commit to c0\n");
+    printf("Use 'mcp log -l' to print previous commit\n");
+}
+
+void printPrevCommit() {
+    Config cfg;
+    getConfig(&cfg);
+
+    Cdata_t cdata;
+    getCdata(&cdata, cfg.currCommit);
+
+    logCommit(cdata.parent);
+}
+
+void printCurrPathCommits(u32 start) {
+    logCommit(start);
+
+    Cdata_t cdata;
+    getCdata(&cdata, start);
+
+    if (cdata.parent == start) return;
+
+    printCurrPathCommits(cdata.parent);
 }

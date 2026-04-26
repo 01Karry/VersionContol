@@ -23,6 +23,7 @@ typedef int32_t i32;
 #define COMMIT "commit"
 #define ADD "add"
 #define LOG "log"
+#define LOAD "load"
 
 #define USER_NAME_SIZE 128
 

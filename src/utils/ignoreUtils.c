@@ -5,7 +5,7 @@ i8 getType(char* path) {
     stat(path, &Stats);
 
     if (S_ISDIR(Stats.st_mode)) return 1;
-    else if(S_ISREG(Stats.st_mode)) return 0;
+    else if (S_ISREG(Stats.st_mode)) return 0;
     return -1;
 }
 
@@ -21,7 +21,7 @@ u8 checkExtIgnore(char* name, char* ext) {
 u8 checkBaseIgnore(char* name) {
     if (name == NULL) return -1;
 
-    char baseReject[][PATH_SIZE] = { ".", "..", REP_NAME };
+    char baseReject[][PATH_SIZE] = { ".", "..", REP_NAME, CDATA_FILE_NAME, CONFIG_FILE_NAME };
 
     for (int i = 0; i < sizeof(baseReject) / sizeof(baseReject[0]); i++) {
         if (strncmp(name, baseReject[i], PATH_SIZE) == 0) return 1;
@@ -35,7 +35,7 @@ IgnoreSt ignoreVal = { NULL, 0 };
 /* Возвращает 2 что бы отлчать от baseingore*/
 i8 checkInMcpIgnore(char* name) {
     if (ignoreVal.arr == NULL) createIgnoreArray();
-    if (ignoreVal.arr == NULL) return -1;
+    if (ignoreVal.arr == NULL) return 0;
 
     for (u32 i = 0; i < ignoreVal.size; i++) {
         if (ignoreVal.arr[i][0] == '.' && checkExtIgnore(name, ignoreVal.arr[i])) {

@@ -1,15 +1,26 @@
 #include "commands\load.h"
 
 #include "inclds.h"
-#include "repUtils.h"
+#include "utils\repUtils.h"
+#include "utils\rmUtils.h"
+#include "utils\ignoreUtils.h"
+#include "utils\copyUtils.h"
 
 void handleLoad(int argc, char** argv) {
-    if (argc != 3 || !isValidIndex(argv[2])) {
+    if (argc != 3) {
         printLoadErrMessage();
+        return;
+    }
+
+    u32 index = atoi(argv[2]);
+
+    if (!isValidIndex(index)) {
+        printLoadErrMessage();
+        return;
     }
 
     clearWorkSpace();
-    loadCommit(argv[2]);
+    loadCommit(index);
 }
 
 void printLoadErrMessage() {
@@ -24,7 +35,23 @@ void clearWorkSpace() {
         return;
     }
 
-    
+    for (struct dirent* entry = readdir(pWorkDir); entry != NULL; entry = readdir(pWorkDir)) {
+        if (checkBaseIgnore(entry->d_name) == 0) {
+            char fullPath[PATH_SIZE];
+            sprintf(fullPath, "%s\\%s", ".", entry->d_name);
+
+            rmAny(fullPath);
+        }
+    }
 
     closedir(pWorkDir);
+}
+
+void loadCommit(u32 index) {
+    char pathToCommit[PATH_SIZE];
+    sprintf(pathToCommit, "%s\\%s%d", VERSIONS_DIR, "c", index);
+
+    noIgnoreCopyAny(pathToCommit, ".");
+
+    setCurrCommit(index);
 }

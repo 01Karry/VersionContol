@@ -100,3 +100,13 @@ u8 isValidIndex(u32 commitIndex) {
 
     return commitIndex < cfgData.commitCount;
 }
+
+void setCurrCommit(u32 index) {
+    FILE* pCfg = fopen(CONFIG_FILE_NAME, "r+");
+    if (pCfg == NULL) return;
+
+    fseek(pCfg, OFFSET_FOR_CURRENT, SEEK_SET);
+    fwrite(&index, sizeof (index), 1, pCfg);
+
+    fclose(pCfg);
+}

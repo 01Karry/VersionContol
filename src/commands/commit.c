@@ -10,6 +10,11 @@
 void handleCommit(int argc, char** argv) {
     if (!isRepCreated()) {
         printNoRepError();
+        return;
+    }
+    if (isStageEmpty()) {
+        printEmptyStageError();
+        return;
     }
 
     makeCommitDir();

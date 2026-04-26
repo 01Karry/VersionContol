@@ -93,3 +93,10 @@ i8 isStageEmpty() {
 void printEmptyStageError() {
     printf("You need to add files to Stage!\n");
 }
+
+u8 isValidIndex(u32 commitIndex) {
+    Config cfgData;
+    getConfig(&cfgData);
+
+    return commitIndex < cfgData.commitCount;
+}

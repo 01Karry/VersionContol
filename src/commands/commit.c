@@ -12,6 +12,7 @@ void handleCommit(int argc, char** argv) {
         printNoRepError();
         return;
     }
+    
     if (isStageEmpty()) {
         printEmptyStageError();
         return;

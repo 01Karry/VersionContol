@@ -7,6 +7,11 @@
 #include "utils\copyUtils.h"
 
 void handleLoad(int argc, char** argv) {
+    if (!isRepCreated()) {
+        printNoRepError();
+        return;
+    }
+    
     if (argc != 3) {
         printLoadErrMessage();
         return;

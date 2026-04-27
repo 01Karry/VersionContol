@@ -4,6 +4,11 @@
 #include "utils\repUtils.h"
 
 void handleLog(int argc, char** argv) {
+    if (!isRepCreated()) {
+        printNoRepError();
+        return;
+    }
+    
     i32 option;
 
     optind = 2;

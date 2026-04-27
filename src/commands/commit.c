@@ -115,7 +115,7 @@ void clearStage() {
             char fullPath[PATH_SIZE];
             sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, entry->d_name);
 
-            rmAny(fullPath);
+            baseIgnoreRmAny(fullPath);
         }
     }
 

@@ -11,7 +11,7 @@ void handleLoad(int argc, char** argv) {
         printNoRepError();
         return;
     }
-    
+
     if (argc != 3) {
         printLoadErrMessage();
         return;
@@ -45,7 +45,7 @@ void clearWorkSpace() {
             char fullPath[PATH_SIZE];
             sprintf(fullPath, "%s\\%s", ".", entry->d_name);
 
-            rmAny(fullPath);
+            baseIgnoreRmAny(fullPath);
         }
     }
 

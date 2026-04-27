@@ -3,6 +3,8 @@
 #include "inclds.h"
 #include "defs.h"
 
+#include <windows.h>
+
 void handleInit(int argc, char** argv) {
     if (argc != 2) {
         printf("Incorrect usage!\n");
@@ -34,6 +36,8 @@ void handleInit(int argc, char** argv) {
 
 i8 createRep() {
     mkdir(REP_NAME);
+    SetFileAttributes(REP_NAME, FILE_ATTRIBUTE_HIDDEN);
+
     mkdir(VERSIONS_DIR);
     mkdir(STAGE_DIR_NAME);
 

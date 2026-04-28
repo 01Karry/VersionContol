@@ -1,4 +1,5 @@
 #include "commands\init.h"
+#include "utils\repUtils.h"
 
 #include "inclds.h"
 #include "defs.h"
@@ -6,6 +7,11 @@
 #include <windows.h>
 
 void handleInit(int argc, char** argv) {
+    if (isRepCreated()) {
+        printf("Repository already initialized\n");
+        return;
+    }
+
     if (argc != 2) {
         printf("Incorrect usage!\n");
         return;

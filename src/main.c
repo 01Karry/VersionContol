@@ -5,7 +5,11 @@
 #include "commands\load.h"
 #include "utils\ignoreUtils.h"
 
+#include <locale.h>
+
 int main(int argc, char** argv) {
+    setlocale(LC_ALL, "rus");
+    
     if (argc < 2) {
         printf("No command!\n");
         return 1;

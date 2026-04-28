@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
         handleAdd(argc, argv);
     }
 
-    else if (strcmp(argv[1], COMMIT) == 0 && argc == 3) {
+    else if (strcmp(argv[1], COMMIT) == 0) {
         handleCommit(argc, argv);
     }
 

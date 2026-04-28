@@ -8,6 +8,10 @@
 #include <time.h>
 
 void handleCommit(int argc, char** argv) {
+    if (argc != 3) {
+        printf("Wrong usage!\n");
+        printf("Use 'mcp commit <message>'\n");
+    }
     if (!isRepCreated()) {
         printNoRepError();
         return;

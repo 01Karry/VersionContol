@@ -1,8 +1,14 @@
 #include "commands\add.h"
 #include "utils\copyUtils.h"
 #include "utils\repUtils.h"
+#include "utils\ignoreUtils.h"
 
 i8 addToStage(char* fileName) {
+    if (!isValidName(fileName)) {
+        printf("%s doesn't exist!\n", fileName);
+        return 2;
+    }
+
     if (strcmp(".", fileName) == 0) {
         copyDir(".", STAGE_DIR_NAME);
         return 0;
@@ -23,4 +29,10 @@ void handleAdd(int argc, char** argv) {
     for (int i = 2; i < argc; i++) {
         addToStage(argv[i]);
     }
+}
+
+u8 isValidName(char* name) {
+    if (getType(name) == -1) return 0;
+
+    return 1;
 }

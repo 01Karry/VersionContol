@@ -17,7 +17,7 @@ void handleCommit(int argc, char** argv) {
         return;
     }
     
-    if (isStageEmpty()) {
+    if (!isStageChanged()) {
         printEmptyStageError();
         return;
     }
@@ -26,7 +26,6 @@ void handleCommit(int argc, char** argv) {
     writeCData(argv[2]);
 
     copyStageToCommit();
-    clearStage();
 
     updateConfig();
 }
@@ -98,6 +97,11 @@ i8 updateConfig() {
     fseek(pCfg, OFFSET_FOR_COUNT, SEEK_SET);
     fwrite(&cfg.commitCount, sizeof(cfg.commitCount), 1, pCfg);
 
+    u8 newStageStatus = STAGE_STATUS_UNCHANGED;
+
+    fseek(pCfg, OFFSET_FOR_STAGE_STATUS, SEEK_SET);
+    fwrite(&newStageStatus, sizeof(newStageStatus), 1, pCfg);
+
     fclose(pCfg);
 
     return 0;
@@ -108,20 +112,4 @@ void copyStageToCommit() {
     getPathToCommitDir(path);
 
     noIgnoreCopyAny(STAGE_DIR_NAME, path);
-}
-
-void clearStage() {
-    DIR* pDir = opendir(STAGE_DIR_NAME);
-    if (pDir == NULL) return;
-
-    for (struct dirent* entry = readdir(pDir); entry != NULL; entry = readdir(pDir)) {
-        if (checkBaseIgnore(entry->d_name) == 0) {
-            char fullPath[PATH_SIZE];
-            sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, entry->d_name);
-
-            baseIgnoreRmAny(fullPath);
-        }
-    }
-
-    closedir(pDir);
 }

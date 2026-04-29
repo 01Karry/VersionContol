@@ -28,6 +28,7 @@ typedef int32_t i32;
 
 #define USER_NAME_SIZE 128
 
+#define OFFSET_FOR_STAGE_STATUS 136
 #define OFFSET_FOR_NAME 8
 #define OFFSET_FOR_COUNT 4 
 #define OFFSET_FOR_CURRENT 0
@@ -36,6 +37,7 @@ typedef struct Config {
     char userName[USER_NAME_SIZE];
     u32 commitCount;
     u32 currCommit;
+    u8 stageStatus;
 } Config;
 
 #define CDATA_FILE_NAME "cdata.dat"
@@ -60,3 +62,6 @@ typedef struct Cdata_t {
 #define OFFSET_FOR_AUTHOR 260
 #define OFFSET_FOR_DATE 388
 #define OFFSET_FOR_TIME 397
+
+#define STAGE_STATUS_UNCHANGED 0
+#define STAGE_STATUS_CHANGED 1

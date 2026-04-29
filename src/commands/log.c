@@ -47,7 +47,7 @@ void logAllCommits() {
     Config cfg;
     getConfig(&cfg);
 
-    for (int i = 0; i < cfg.commitCount; i++) {
+    for (int i = cfg.commitCount - 1; i >= 0; i--) {
         logCommit(i);
     }
 }

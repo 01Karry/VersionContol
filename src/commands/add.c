@@ -26,9 +26,12 @@ void handleAdd(int argc, char** argv) {
         return;
     }
 
+    i8 changed = 0;
+
     for (int i = 2; i < argc; i++) {
-        addToStage(argv[i]);
+        changed = addToStage(argv[i]) == 0 || changed == 1 ? 1 : 0;
     }
 
-    setStageStatus(STAGE_STATUS_CHANGED);
+    if (changed == 1)
+        setStageStatus(STAGE_STATUS_CHANGED);
 }

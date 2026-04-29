@@ -32,13 +32,14 @@ void printNotTrackedErr(char* name) {
     printf("%s wasn't tracked!\n", name);
 }
 
-i8 untrack(char* name) {
+void untrack(char* name) {
     char fullPath[PATH_SIZE];
     sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, name);
 
     if (checkBaseIgnore(name) == 1) {
         printf("You can't untrack %s", name);
+        return;
     }
 
-    return rmAny(fullPath);
+    baseIgnoreRmAny(fullPath);
 }

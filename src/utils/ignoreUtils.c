@@ -119,7 +119,5 @@ void freeIgnoreArr() {
 }
 
 u8 isValidName(char* name) {
-    if (access(name, F_OK)) return 0;
-
-    return 1;
+    return access(name, F_OK) == 0;
 }

@@ -117,3 +117,7 @@ void freeIgnoreArr() {
     ignoreVal.arr = NULL;
     ignoreVal.size = 0;
 }
+
+u8 isValidName(char* name) {
+    return access(name, F_OK) == 0;
+}

@@ -3,6 +3,7 @@
 #include "commands\commit.h"
 #include "commands\log.h"
 #include "commands\load.h"
+#include "commands\untrack.h"
 #include "utils\ignoreUtils.h"
 
 #include <locale.h>
@@ -33,6 +34,10 @@ int main(int argc, char** argv) {
 
     else if (strcmp(argv[1], LOAD) == 0) {
         handleLoad(argc, argv);
+    }
+
+    else if (strcmp(argv[1], UNTRACK) == 0) {
+        handleUntrack(argc, argv);
     }
 
     freeIgnoreArr();

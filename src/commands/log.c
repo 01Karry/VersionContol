@@ -36,9 +36,6 @@ void handleLog(int argc, char** argv) {
 
             break;
         }
-        case 'l':
-            printPrevCommit();
-            break;
         case '?':
             printLogErrMessage();
             break;
@@ -74,17 +71,6 @@ void printLogErrMessage() {
     printf("Use 'mcp log' to get all commits\n");
     printf("Use 'mcp log -i N' to print commit N\n");
     printf("Use 'mcp log -r' to print path from curr commit to c0\n");
-    printf("Use 'mcp log -l' to print previous commit\n");
-}
-
-void printPrevCommit() {
-    Config cfg;
-    getConfig(&cfg);
-
-    Cdata_t cdata;
-    getCdata(&cdata, cfg.currCommit);
-
-    logCommit(cdata.parent);
 }
 
 void printCurrPathCommits(u32 start) {

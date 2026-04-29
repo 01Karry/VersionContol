@@ -56,10 +56,11 @@ i8 makeCfg() {
     FILE* pCfg = fopen(CONFIG_FILE_NAME, "wb");
     if (pCfg == NULL) return 1;
 
-    Config cfgData = { .userName = { 0 }, .commitCount = 0, .currCommit = 0 };
+    Config cfgData = { .userName = { 0 }, .commitCount = 0, .currCommit = 0, .stageStatus = 0};
 
     fwrite(&cfgData.commitCount, sizeof(cfgData.commitCount), 2, pCfg);
     fwrite(cfgData.userName, sizeof(cfgData.userName), 1, pCfg);
+    fwrite(&cfgData.stageStatus, sizeof(cfgData.stageStatus), 1, pCfg);
 
     fclose(pCfg);
 

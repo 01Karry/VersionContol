@@ -13,6 +13,7 @@ i8 isIgnore(char* source, char* name);
 void ignoreOutput(char* name, i8 flag);
 void createIgnoreArray();
 void freeIgnoreArr();
+u8 isValidName(char* name);
 
 typedef struct IgnoreSt {
     char** arr;

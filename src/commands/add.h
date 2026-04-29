@@ -5,4 +5,3 @@
 
 i8 addToStage(char* fileName);
 void handleAdd(int argc, char** argv);
-u8 isValidName(char* name);

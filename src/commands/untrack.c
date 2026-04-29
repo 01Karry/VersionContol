@@ -36,5 +36,9 @@ i8 untrack(char* name) {
     char fullPath[PATH_SIZE];
     sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, name);
 
+    if (checkBaseIgnore(name) == 1) {
+        printf("You can't untrack %s", name);
+    }
+
     return rmAny(fullPath);
 }

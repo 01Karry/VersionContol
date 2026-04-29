@@ -26,6 +26,9 @@ void handleLoad(int argc, char** argv) {
 
     clearWorkSpace();
     loadCommit(index);
+
+    reloadStage(index);
+    setStageStatus(STAGE_STATUS_UNCHANGED);
 }
 
 void printLoadErrMessage() {
@@ -59,4 +62,13 @@ void loadCommit(u32 index) {
     noIgnoreCopyAny(pathToCommit, ".");
 
     setCurrCommit(index);
+}
+
+void reloadStage(u32 index) {
+    char pathToCommit[PATH_SIZE];
+    sprintf(pathToCommit, "%s\\%s%d", VERSIONS_DIR, "c", index);
+
+    clearStage();
+
+    noIgnoreCopyAny(pathToCommit, STAGE_DIR_NAME);
 }

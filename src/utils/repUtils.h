@@ -13,3 +13,4 @@ u8 isValidIndex(u32 commitIndex);
 void setCurrCommit(u32 index);
 i8 setStageStatus(u8 val);
 i8 getStageStatus();
+void clearStage();

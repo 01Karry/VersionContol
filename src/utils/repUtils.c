@@ -1,5 +1,8 @@
 #include "utils\repUtils.h"
 
+#include "utils\ignoreUtils.h"
+#include "utils\rmUtils.h"
+
 i8 isRepCreated() {
     DIR* pRep = opendir(REP_NAME);
     if (pRep == NULL) return 0;
@@ -125,3 +128,19 @@ i8 getStageStatus() {
 
     return status;
 }
+
+void clearStage() {
+    DIR* pDir = opendir(STAGE_DIR_NAME);
+    if (pDir == NULL) return;
+
+    for (struct dirent* entry = readdir(pDir); entry != NULL; entry = readdir(pDir)) {
+        if (checkBaseIgnore(entry->d_name) == 0) {
+            char fullPath[PATH_SIZE];
+            sprintf(fullPath, "%s\\%s", STAGE_DIR_NAME, entry->d_name);
+
+            baseIgnoreRmAny(fullPath);
+        }
+    }
+
+    closedir(pDir);
+};

@@ -24,6 +24,7 @@ typedef int32_t i32;
 #define ADD "add"
 #define LOG "log"
 #define LOAD "load"
+#define UNTRACK "untrack"
 
 #define USER_NAME_SIZE 128
 

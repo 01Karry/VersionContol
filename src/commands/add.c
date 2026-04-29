@@ -30,9 +30,3 @@ void handleAdd(int argc, char** argv) {
         addToStage(argv[i]);
     }
 }
-
-u8 isValidName(char* name) {
-    if (getType(name) == -1) return 0;
-
-    return 1;
-}

@@ -2,10 +2,11 @@
 
 i8 getType(char* path) {
     struct stat Stats;
-    stat(path, &Stats);
+    if (stat(path, &Stats) == -1) return -1;
 
     if (S_ISDIR(Stats.st_mode)) return 1;
     else if (S_ISREG(Stats.st_mode)) return 0;
+    
     return -1;
 }
 

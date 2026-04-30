@@ -18,7 +18,7 @@ void handleLog(int argc, char** argv) {
         return;
     }
 
-    if ((option = getopt(argc, argv, "i:rl")) != -1) {
+    if ((option = getopt(argc, argv, "i:r")) != -1) {
         switch (option) {
         case 'i': {
             u32 commitIndex = atoi(optarg);

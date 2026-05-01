@@ -28,7 +28,6 @@ i8 baseIgnoreRmNEDir(char* path) {
 
 void baseIgnoreRmAny(char* path) {
     if (checkBaseIgnore(path) != 0) {
-        printf("ignore\n");
         return;
     }
 

@@ -14,3 +14,4 @@ void setCurrCommit(u32 index);
 i8 setStageStatus(u8 val);
 i8 getStageStatus();
 void clearStage();
+i8 isFileChanged(char* path);

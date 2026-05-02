@@ -14,7 +14,6 @@ void handleUntrack(int argc, char** argv) {
     for (int i = 2; i < argc; i++) {
         if (isTracked(argv[i])) {
             untrack(argv[i]);
-            setStageStatus(STAGE_STATUS_CHANGED);
         }
         else
             printNotTrackedErr(argv[i]);
@@ -44,4 +43,5 @@ void untrack(char* name) {
     }
 
     baseIgnoreRmAny(fullPath);
+    setStageStatus(STAGE_STATUS_CHANGED);;
 }

@@ -143,4 +143,39 @@ void clearStage() {
     }
 
     closedir(pDir);
-};
+}
+
+i8 isFileChanged(char* path) {
+    char pathToFileInStage[PATH_SIZE];
+    sprintf(pathToFileInStage, "%s\\%s", STAGE_DIR_NAME, path);
+
+    FILE* pFileToAdd = fopen(path, "r");
+    if (pFileToAdd == NULL) {
+        return -1;
+    } // -1 добавляемый файл должен существовать
+
+    FILE* pFileInStage = fopen(pathToFileInStage, "r");
+    if (pFileInStage == NULL) {
+        fclose(pFileToAdd);
+        return 1;
+    }
+
+    u8 buff1[BUFF_SIZE], buff2[BUFF_SIZE];
+
+    if (_filelengthi64(fileno(pFileToAdd)) != _filelengthi64(fileno(pFileInStage))) {
+        fclose(pFileToAdd);
+        fclose(pFileInStage);
+
+        return 1;
+    }
+
+    u32 size = fread(buff1, 1, BUFF_SIZE, pFileToAdd);
+
+    while (size > 0) {
+        // -1 считаные размеры должны совпадать
+        if (fread(buff2, 1, BUFF_SIZE, pFileInStage) != size) return -1;
+        if (memcmp(buff1, buff2, size) != 0) return 1;
+    }
+
+    return 0;
+}

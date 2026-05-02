@@ -15,3 +15,4 @@ i8 setStageStatus(u8 val);
 i8 getStageStatus();
 void clearStage();
 i8 isFileChanged(char* path);
+i8 isDirChanged(char* path);

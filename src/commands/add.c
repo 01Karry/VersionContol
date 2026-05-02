@@ -27,6 +27,6 @@ void handleAdd(int argc, char** argv) {
     }
 
     for (int i = 2; i < argc; i++) {
-        addToStage(argv[i]) == 0 || changed == 1 ? 1 : 0;
+        addToStage(argv[i]);
     }
 }

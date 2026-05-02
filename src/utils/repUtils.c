@@ -145,6 +145,7 @@ void clearStage() {
     closedir(pDir);
 }
 
+// Сравнивает переданный файл с файлов в Stage
 i8 isFileChanged(char* path) {
     char pathToFileInStage[PATH_SIZE];
     sprintf(pathToFileInStage, "%s\\%s", STAGE_DIR_NAME, path);
@@ -173,9 +174,34 @@ i8 isFileChanged(char* path) {
 
     while (size > 0) {
         // -1 считаные размеры должны совпадать
-        if (fread(buff2, 1, BUFF_SIZE, pFileInStage) != size) return -1;
-        if (memcmp(buff1, buff2, size) != 0) return 1;
+        if (fread(buff2, 1, BUFF_SIZE, pFileInStage) != size) {
+            fclose(pFileToAdd);
+            fclose(pFileInStage);
+
+            return -1;
+        }
+        if (memcmp(buff1, buff2, size) != 0) {
+            fclose(pFileToAdd);
+            fclose(pFileInStage);
+
+            return 1;
+        }
     }
 
+    fclose(pFileToAdd);
+    fclose(pFileInStage);
+
     return 0;
+}
+
+i8 isDirChanged(char* path) {
+    DIR* pDirToAdd = opendir(path);
+    if (pDirToAdd == NULL) return -1;
+
+    DIR* pDirInStage = opendir(path);
+    if (pDirInStage == NULL) {
+        closedir(pDirToAdd);
+
+        return 1;
+    }
 }

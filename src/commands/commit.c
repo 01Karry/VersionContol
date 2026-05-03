@@ -18,7 +18,7 @@ void handleCommit(int argc, char** argv) {
         return;
     }
     
-    if (!isStageChanged()) {
+    if (!isStageChanged() || isStageEmpty()) {
         printEmptyStageError();
         return;
     }

@@ -78,6 +78,24 @@ i8 getCdata(Cdata_t* dest, u32 commitIndex) {
     return 0;
 }
 
+i8 isStageEmpty() {
+    DIR* pStage = opendir(STAGE_DIR_NAME);
+    if (pStage == NULL) {
+        printNoRepError();
+        return -1;
+    }
+
+    for (struct dirent* entry = readdir(pStage); entry != NULL; entry = readdir(pStage)) {
+        if (strcmp(".", entry->d_name) != 0 && strcmp("..", entry->d_name) != 0) {
+            closedir(pStage);
+            return 0;
+        }
+    }
+
+    closedir(pStage);
+    return 1;
+}
+
 u8 isStageChanged() {
     return getStageStatus() == 1;
 }

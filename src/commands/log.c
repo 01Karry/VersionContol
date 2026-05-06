@@ -23,6 +23,11 @@ void handleLog(int argc, char** argv) {
         case 'i': {
             u32 commitIndex = atoi(optarg);
 
+            if (commitIndex == 0 && strcmp("0", optarg) != 0) {
+                printLogErrMessage();
+                break;
+            }
+
             if (logCommit(commitIndex) != 0) {
                 printLogErrMessage();
             }

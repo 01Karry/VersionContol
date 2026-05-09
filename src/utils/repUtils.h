@@ -14,5 +14,6 @@ void setCurrCommit(u32 index);
 i8 setStageStatus(u8 val);
 i8 getStageStatus();
 void clearStage();
-i8 isFileChanged(char* path);
-i8 isDirChanged(char* path);
+i8 isFileSame(char* path1, char* path2);
+i8 cmpDirToDir(char* dir1, char* dir2);
+i8 isSameAny(char* path1, char* path2);

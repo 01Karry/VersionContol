@@ -21,11 +21,6 @@ void handleInit(int argc, char** argv) {
         printf("Can't create Repository\n");
         return;
     }
-
-    if (makeCfg() == 1) {
-        printf("Can't create config file\n");
-        return;
-    }
     
     FILE* pIgnore = fopen(IGNORE_FILE_NAME, "w");
     if (pIgnore == NULL) {
@@ -47,9 +42,7 @@ i8 createRep() {
     mkdir(VERSIONS_DIR);
     mkdir(STAGE_DIR_NAME);
 
-    makeCfg();
-    
-    return 0;
+    return makeCfg();
 }
 
 i8 makeCfg() {

@@ -17,6 +17,8 @@ i8 addToStage(char* fileName) {
     char destPath[PATH_SIZE];
     sprintf(destPath, "%s\\%s", STAGE_DIR_NAME, fileName);
 
+    if (isSameAny(fileName, destPath) == 1) return 1;
+
 	return copyAny(fileName, destPath);
 }
 
@@ -26,12 +28,7 @@ void handleAdd(int argc, char** argv) {
         return;
     }
 
-    i8 changed = 0;
-
     for (int i = 2; i < argc; i++) {
-        changed = addToStage(argv[i]) == 0 || changed == 1 ? 1 : 0;
+        addToStage(argv[i]);
     }
-
-    if (changed == 1)
-        setStageStatus(STAGE_STATUS_CHANGED);
 }

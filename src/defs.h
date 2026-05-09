@@ -2,7 +2,7 @@
 
 #include "inclds.h"
 
-#define BUFF_SIZE 512
+#define BUFF_SIZE 4096
 
 #define PATH_SIZE 512
 

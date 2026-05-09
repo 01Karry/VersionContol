@@ -161,4 +161,93 @@ void clearStage() {
     }
 
     closedir(pDir);
-};
+}
+
+// Сравнивает переданный файл с файлов в Stage
+i8 isFileSame(char* path1, char* path2) {
+    FILE* pFile1 = fopen(path1, "r");
+    if (pFile1 == NULL) {
+        return -1;
+    }
+
+    FILE* pFile2 = fopen(path2, "r");
+    if (pFile2 == NULL) {
+        fclose(pFile1);
+        return 0;
+    }
+
+    u8 buff1[BUFF_SIZE], buff2[BUFF_SIZE];
+
+    if (_filelengthi64(fileno(pFile1)) != _filelengthi64(fileno(pFile2))) {
+        fclose(pFile1);
+        fclose(pFile2);
+
+        return 0;
+    }
+
+    u32 size = fread(buff1, 1, BUFF_SIZE, pFile1);
+
+    while (size > 0) {
+        // -1 считаные размеры должны совпадать
+        if (fread(buff2, 1, BUFF_SIZE, pFile2) != size) {
+            fclose(pFile1);
+            fclose(pFile2);
+
+            return -1;
+        }
+        if (memcmp(buff1, buff2, size) != 0) {
+            fclose(pFile1);
+            fclose(pFile2);
+
+            return 0;
+        }
+    }
+
+    fclose(pFile1);
+    fclose(pFile2);
+
+    return 1;
+}
+
+// возвращает 1 если одниковые
+i8 cmpDirToDir(char* dir1, char* dir2) {
+    DIR* pDir1 = opendir(dir1);
+    if (pDir1 == NULL) return 0;
+
+    DIR* pDir2 = opendir(dir2);
+    if (pDir2 == NULL) {
+        closedir(pDir1);
+
+        return 0;
+    }
+    closedir(pDir2);
+
+    for (struct dirent* entry = readdir(pDir1); entry != NULL; entry = readdir(pDir1)) {
+        if (checkBaseIgnore(entry->d_name) == 1) continue;
+        char insideDir1Path[PATH_SIZE];
+        char insideDir2Path[PATH_SIZE];
+
+        sprintf(insideDir1Path, "%s\\%s", dir1, entry->d_name);
+        sprintf(insideDir2Path, "%s\\%s", dir2, entry->d_name);
+
+        if (isSameAny(insideDir1Path, insideDir2Path) == 0) return 0;
+    }
+
+    return 1;
+}
+
+i8 isSameAny(char* path1, char* path2) {
+    i8 type = getType(path1);
+
+    if (type != getType(path2)) return 0;
+
+    if (type == 0) {
+        return isFileSame(path1, path2);
+    }
+
+    if (type == -1) return -1;
+
+    if (cmpDirToDir(path1, path2) == 1 && cmpDirToDir(path2, path1) == 1) return 1;
+
+    return 0;
+}

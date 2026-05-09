@@ -17,6 +17,8 @@ i8 addToStage(char* fileName) {
     char destPath[PATH_SIZE];
     sprintf(destPath, "%s\\%s", STAGE_DIR_NAME, fileName);
 
+    if (isSameAny(fileName, destPath) == 1) return 1;
+
 	return copyAny(fileName, destPath);
 }
 

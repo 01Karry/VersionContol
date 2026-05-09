@@ -230,8 +230,6 @@ i8 cmpDirToDir(char* dir1, char* dir2) {
         sprintf(insideDir1Path, "%s\\%s", dir1, entry->d_name);
         sprintf(insideDir2Path, "%s\\%s", dir2, entry->d_name);
 
-        printf("Path1 : %s\nPath2 : %s\n", insideDir1Path, insideDir2Path);
-
         if (isSameAny(insideDir1Path, insideDir2Path) == 0) return 0;
     }
 
@@ -240,8 +238,6 @@ i8 cmpDirToDir(char* dir1, char* dir2) {
 
 i8 isSameAny(char* path1, char* path2) {
     if (isIgnore(".", path1) != 0 || isIgnore(".", path2) != 0) return 1;
-
-    //printf("Path1 : %s\nPath2 : %s\n", path1, path2);
 
     i8 type = getType(path1);
 

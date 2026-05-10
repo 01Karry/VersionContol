@@ -42,9 +42,6 @@ i8 getConfig(Config* cfg) {
     fseek(pCfg, OFFSET_FOR_NAME, SEEK_SET);
     fread(&cfg->userName, sizeof(cfg->userName), 1, pCfg);
 
-    fseek(pCfg, OFFSET_FOR_STAGE_STATUS, SEEK_SET);
-    fread(&cfg->stageStatus, sizeof(cfg->stageStatus), 1, pCfg);
-
     fclose(pCfg);
 
     return 0;
@@ -96,10 +93,6 @@ i8 isStageEmpty() {
     return 1;
 }
 
-u8 isStageChanged() {
-    return getStageStatus() == 1;
-}
-
 void printEmptyStageError() {
     printf("You need to add files to Stage!\n");
 }
@@ -121,30 +114,17 @@ void setCurrCommit(u32 index) {
     fclose(pCfg);
 }
 
-i8 setStageStatus(u8 val) {
-    FILE* pCfg = fopen(CONFIG_FILE_NAME, "r+");
-    if (pCfg == NULL) return -1;
-
-    fseek(pCfg, OFFSET_FOR_STAGE_STATUS, SEEK_SET);
-    fwrite(&val, sizeof(val), 1, pCfg);
-
-    fclose(pCfg);
-
-    return 0;
-}
 
 i8 getStageStatus() {
-    FILE* pCfg = fopen(CONFIG_FILE_NAME, "r");
-    if (pCfg == NULL) return -1;
+    Config cfg;
+    getConfig(&cfg);
 
-    u8 status;
+    if (cfg.commitCount == 0 && !isStageEmpty()) return STAGE_STATUS_CHANGED;
 
-    fseek(pCfg, OFFSET_FOR_STAGE_STATUS, SEEK_SET);
-    fread(&status, sizeof(status), 1, pCfg);
+    char pathToPrewStage[PATH_SIZE];
+    sprintf(pathToPrewStage, "%s\\%s%d", VERSIONS_DIR, "c", cfg.currCommit);
 
-    fclose(pCfg);
-
-    return status;
+    return isSameAny(pathToPrewStage, STAGE_DIR_NAME) == 0;
 }
 
 void clearStage() {
@@ -163,7 +143,6 @@ void clearStage() {
     closedir(pDir);
 }
 
-// Сравнивает переданный файл с файлов в Stage
 i8 isFileSame(char* path1, char* path2) {
     FILE* pFile1 = fopen(path1, "r");
     if (pFile1 == NULL) {

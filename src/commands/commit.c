@@ -18,7 +18,7 @@ void handleCommit(int argc, char** argv) {
         return;
     }
     
-    if (!isStageChanged() || isStageEmpty()) {
+    if (getStageStatus() == STAGE_STATUS_UNCHANGED || isStageEmpty()) {
         printEmptyStageError();
         return;
     }
@@ -27,7 +27,6 @@ void handleCommit(int argc, char** argv) {
     writeCData(argv[2]);
 
     copyStageToCommit();
-
     updateConfig();
 }
 
@@ -97,11 +96,6 @@ i8 updateConfig() {
 
     fseek(pCfg, OFFSET_FOR_COUNT, SEEK_SET);
     fwrite(&cfg.commitCount, sizeof(cfg.commitCount), 1, pCfg);
-
-    u8 newStageStatus = STAGE_STATUS_UNCHANGED;
-
-    fseek(pCfg, OFFSET_FOR_STAGE_STATUS, SEEK_SET);
-    fwrite(&newStageStatus, sizeof(newStageStatus), 1, pCfg);
 
     fclose(pCfg);
 

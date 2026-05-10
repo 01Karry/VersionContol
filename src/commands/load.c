@@ -28,7 +28,6 @@ void handleLoad(int argc, char** argv) {
     loadCommit(index);
 
     reloadStage(index);
-    setStageStatus(STAGE_STATUS_UNCHANGED);
 }
 
 void printLoadErrMessage() {

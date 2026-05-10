@@ -43,5 +43,4 @@ void untrack(char* name) {
     }
 
     baseIgnoreRmAny(fullPath);
-    setStageStatus(STAGE_STATUS_CHANGED);;
 }

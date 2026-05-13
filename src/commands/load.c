@@ -17,6 +17,11 @@ void handleLoad(int argc, char** argv) {
         return;
     }
 
+    if (getStageStatus() == STAGE_STATUS_CHANGED) {
+        printf("You need to commit changes!\n");
+        return;
+    }
+
     u32 index = atoi(argv[2]);
 
     if (!isValidIndex(index)) {

@@ -18,7 +18,12 @@ void handleCommit(int argc, char** argv) {
         return;
     }
     
-    if (getStageStatus() == STAGE_STATUS_UNCHANGED || isStageEmpty()) {
+    if (getStageStatus() == STAGE_STATUS_UNCHANGED) {
+        printf("Current state is unchanged!\n");
+        return;
+    }
+
+    if (isStageEmpty()) {
         printEmptyStageError();
         return;
     }
